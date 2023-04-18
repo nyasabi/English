@@ -12,17 +12,15 @@
         <h1>英単語クイズ</h1>
     </header>
     <main>
-        <section class="quiz-section">
-            <h2 class="quiz-question" id="question"></h2>
-            <div class="quiz-answer-container">
-                <input type="text" class="quiz-answer" placeholder="答えを入力" id="answer">
-                <button class="quiz-check-button" onclick="checkAnswer()">答え合わせ</button>
-            </div>
-            <div class="quiz-result-container">
-                <p class="quiz-result" id="result"></p>
-                <button class="quiz-next-button" onclick="showNextQuestion()">次の問題へ</button>
-                <button class="quiz-random-button" onclick="toggleRandom()">ランダムに出題</button>
-            </div>
+<div class="quiz-section">
+  <h2 class="quiz-question"></h2>
+  <input type="text" class="quiz-answer">
+  <button class="quiz-check-button">答え合わせ</button>
+  <p class="quiz-result"></p>
+  <button class="quiz-next-button" disabled>次の問題へ</button>
+  <button class="quiz-random-button">ランダム</button>
+</div>
+
         </section>
     </main>
 </body>
