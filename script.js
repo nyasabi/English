@@ -41,42 +41,48 @@ var words = [
 
 ];
 
-var currentQuestion = null;
-var randomMode = false;
+let currentQuestionIndex = 0;
+let random = false;
 
-function displayQuestion() {
-	var index;
-	if (randomMode) {
-		index = Math.floor(Math.random() * words.length);
-	} else {
-		if (currentQuestion === null) {
-			index = 0;
-		} else {
-			index = (words.indexOf(currentQuestion) + 1) % words.length;
-		}
-	}
-	currentQuestion = words[index];
-	document.getElementById("question").textContent = currentQuestion.question;
-	document.getElementById("answer").value = "";
-	document.getElementById("result").textContent = "";
+const quizQuestionElement = document.querySelector(".quiz-question");
+const quizAnswerElement = document.querySelector(".quiz-answer");
+const quizResultElement = document.querySelector(".quiz-result");
+
+function showCurrentQuestion() {
+  const question = questions[currentQuestionIndex].question;
+  quizQuestionElement.textContent = question;
+  quizAnswerElement.value = "";
+  quizResultElement.textContent = "";
 }
 
 function checkAnswer() {
-	var answer = document.getElementById("answer").value;
-	if (answer === currentQuestion.answer) {
-		document.getElementById("result").textContent = "正解！";
-	} else {
-		document.getElementById("result").textContent = "不正解。答えは「" + currentQuestion.answer + "」でした。";
-	}
+  const answer = quizAnswerElement.value.trim();
+  const expectedAnswer = questions[currentQuestionIndex].answer;
+  if (answer === expectedAnswer) {
+    quizResultElement.textContent = "正解！";
+  } else {
+    quizResultElement.textContent = `不正解。正解は「${expectedAnswer}」でした。`;
+  }
 }
 
 function nextQuestion() {
-	displayQuestion();
+  currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+  showCurrentQuestion();
 }
 
 function toggleRandom() {
-	randomMode = !randomMode;
-	displayQuestion();
+  random = !random;
+  if (random) {
+    shuffleQuestions();
+  }
 }
 
-displayQuestion();
+function shuffleQuestions() {
+  for (let i = questions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [questions[i], questions[j]] = [questions[j], questions[i]];
+  }
+  showCurrentQuestion();
+}
+
+showCurrentQuestion();
