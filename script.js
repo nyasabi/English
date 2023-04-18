@@ -41,6 +41,19 @@ var words = [
 
 ];
 
+// 問題を表示する関数
+function showQuestion() {
+  const question = document.querySelector('.quiz-question');
+  question.textContent = currentQuestion.question; // 問題文を設定する
+}
+
+// ページ読み込み時に初期化する関数
+function init() {
+  currentQuestion = quizData[0];
+  showQuestion(); // 問題を表示する
+}
+
+
 let currentQuestionIndex = 0;
 let random = false;
 
