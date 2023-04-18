@@ -41,61 +41,70 @@ var words = [
 
 ];
 
-// 問題を表示する関数
-function showQuestion() {
-  const question = document.querySelector('.quiz-question');
-  question.textContent = currentQuestion.question; // 問題文を設定する
-}
+// 問題をランダムに出題するかどうかのフラグ
+let isRandom = false;
 
-// ページ読み込み時に初期化する関数
-function init() {
-  currentQuestion = quizData[0];
-  showQuestion(); // 問題を表示する
-}
-
-
+// 現在の問題のインデックス
 let currentQuestionIndex = 0;
-let random = false;
 
-const quizQuestionElement = document.querySelector(".quiz-question");
-const quizAnswerElement = document.querySelector(".quiz-answer");
-const quizResultElement = document.querySelector(".quiz-result");
+// DOM要素の取得
+const questionElement = document.querySelector('.quiz-question');
+const answerInputElement = document.querySelector('.quiz-answer');
+const resultElement = document.querySelector('.quiz-result');
+const nextButtonElement = document.querySelector('.quiz-next-button');
+const checkButtonElement = document.querySelector('.quiz-check-button');
+const randomButtonElement = document.querySelector('.quiz-random-button');
 
-function showCurrentQuestion() {
-  const question = questions[currentQuestionIndex].question;
-  quizQuestionElement.textContent = question;
-  quizAnswerElement.value = "";
-  quizResultElement.textContent = "";
-}
+// 初期状態の問題を表示
+updateQuestion();
 
+// 答え合わせボタンがクリックされたときの処理
 function checkAnswer() {
-  const answer = quizAnswerElement.value.trim();
-  const expectedAnswer = questions[currentQuestionIndex].answer;
-  if (answer === expectedAnswer) {
-    quizResultElement.textContent = "正解！";
+  // 答えを取得
+  const answer = answerInputElement.value;
+  
+  // 現在の問題の正解を取得
+  const correctAnswer = quiz[currentQuestionIndex].answer;
+  
+  // 答えが正しいかどうかをチェック
+  if (answer === correctAnswer) {
+    // 正解の場合は、「正解」と表示
+    resultElement.textContent = '正解';
   } else {
-    quizResultElement.textContent = `不正解。正解は「${expectedAnswer}」でした。`;
+    // 不正解の場合は、「不正解」と表示
+    resultElement.textContent = '不正解';
   }
+  
+  // 答え合わせボタンを無効化
+  checkButtonElement.disabled = true;
+  
+  // 次の問題へボタンを有効化
+  nextButtonElement.disabled = false;
 }
 
+// 次の問題へボタンがクリックされたときの処理
 function nextQuestion() {
-  currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
-  showCurrentQuestion();
+  // 問題を更新
+  updateQuestion();
+  
+  // 答え合わせボタンと次の問題へボタンを有効化
+  checkButtonElement.disabled = false;
+  nextButtonElement.disabled = true;
+  
+  // 正解/不正解の表示をクリア
+  resultElement.textContent = '';
 }
 
+// ランダムに出題ボタンがクリックされたときの処理
 function toggleRandom() {
-  random = !random;
-  if (random) {
-    shuffleQuestions();
-  }
+  // ランダム出題モードをトグル
+  isRandom = !isRandom;
+  
+  // 問題を更新
+  updateQuestion();
 }
 
-function shuffleQuestions() {
-  for (let i = questions.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [questions[i], questions[j]] = [questions[j], questions[i]];
-  }
-  showCurrentQuestion();
-}
-
-showCurrentQuestion();
+// 問題を更新する関数
+function updateQuestion() {
+  // 問題のインデックスを決定
+  if (isRandom)
