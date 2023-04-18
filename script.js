@@ -1,5 +1,12 @@
-var words = [
-  
+const quizSectionElement = document.querySelector('.quiz-section');
+const questionElement = document.querySelector('.quiz-question');
+const answerInputElement = document.querySelector('.quiz-answer');
+const checkButtonElement = document.querySelector('.quiz-check-button');
+const resultElement = document.querySelector('.quiz-result');
+const nextButtonElement = document.querySelector('.quiz-next-button');
+const randomButtonElement = document.querySelector('.quiz-random-button');
+
+let words = [
 	{ question: "~を決める", answer: "decide" },
 	{ question: "～に登る", answer: "climb" },
 	{ question: "行動する", answer: "act" },
@@ -38,56 +45,77 @@ var words = [
 	{ question: "～を注文する", answer: "order" },
 	{ question: "～を見せる", answer: "show" },
 	{ question: "～を終える", answer: "finish" }
-
 ];
 
-// 「答え合わせ」ボタンをクリックしたときの処理
-checkButtonElement.addEventListener('click', () => {
-// 答えを取得
-const answer = words[currentQuestionIndex].answer;
+let currentQuestionIndex = 0;
+let isRandom = false;
 
-// 入力された答えを取得
-const userAnswer = answerInputElement.value.trim().toLowerCase();
-
-// 答えが正しい場合
-if (userAnswer === answer) {
-// 正解と表示
-resultElement.textContent = '正解！';
-resultElement.classList.add('correct');
-resultElement.classList.remove('incorrect');
-} else {
-// 不正解と表示
-resultElement.textContent = 不正解。正解は「${answer}」です。;
-resultElement.classList.add('incorrect');
-resultElement.classList.remove('correct');
+function updateQuestion() {
+  // 問題文を更新
+  questionElement.textContent = words[currentQuestionIndex].question;
+  
+  // ランダムモードの場合は問題文をランダムに表示
+  if (isRandom) {
+    const randomIndex = Math.floor(Math.random() * words.length);
+    questionElement.textContent = words[randomIndex].question;
+  }
 }
 
-// 「次の問題へ」ボタンを有効化
-nextButtonElement.disabled = false;
-});
+function checkAnswer() {
+  // 答えを取得
+  const answer = words[currentQuestionIndex].answer;
+
+  // 入力された答えを取得
+  const userAnswer = answerInputElement.value.trim().toLowerCase();
+
+  // 答えが正しい場合
+  if (userAnswer === answer) {
+    // 正解と表示
+    resultElement.textContent = '正解！';
+    resultElement.classList.add('correct');
+    resultElement.classList.remove('incorrect');
+  } else {
+    // 不正解と表示
+    resultElement.textContent = `不正解。正解は「${answer}」です。`;
+    resultElement.classList.add('incorrect');
+    resultElement.classList.remove('correct');
+  }
+
+  // 「次の問題へ」ボタンを有効化
+  nextButtonElement.disabled = false;
+  // 「答え合わせ」ボタンを無効化
+  checkButtonElement.disabled = true;
+}
+
+function showNextQuestion() {
+  // 問題番号を更新
+  currentQuestionIndex++;
+  if (currentQuestionIndex >= words.length) {
+    currentQuestionIndex = 0;
+  }
+  // 問題を更新
+  updateQuestion();
+  // 入力欄をクリア
+  answerInputElement.value = '';
+  // 結果メッセージをクリア
+  resultElement.textContent = '';
+  resultElement.classList.remove('correct');
+  resultElement.classList.remove('incorrect');
+}
+
+function toggleRandom() {
+  isRandom = !isRandom;
+  if (isRandom) {
+    randomButtonElement.textContent = 'ランダムモード解除';
+  } else {
+    randomButtonElement.textContent = 'ランダムに出題';
+  }
+}
+
+// 「答え合わせ」ボタンをクリックしたときの処理
+checkButtonElement.addEventListener('click', checkAnswer);
 
 // 「次の問題へ」ボタンをクリックしたときの処理
-nextButtonElement.addEventListener('click', () => {
-// 次の問題を出題
-showNextQuestion();
+nextButtonElement.addEventListener('click', showNextQuestion);
 
-// 「答え合わせ」ボタンを無効化
-checkButtonElement.disabled = true;
-});
-
-// 「ランダムに出題する」ボタンをクリックしたときの処理
-randomButtonElement.addEventListener('click', () => {
-// ランダムに出題するかどうかのフラグを切り替える
-toggleRandom();
-
-// 問題を初期化
-currentQuestionIndex = 0;
-updateQuestion();
-
-// 「答え合わせ」ボタンと次の問題へボタンを有効化
-checkButtonElement.disabled = false;
-nextButtonElement.disabled = false;
-});
-
-// 初期化
-updateQuestion();
+// 「ランダムに出題する」ボタンをクリ
