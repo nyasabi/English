@@ -55,56 +55,52 @@ const nextButtonElement = document.querySelector('.quiz-next-button');
 const checkButtonElement = document.querySelector('.quiz-check-button');
 const randomButtonElement = document.querySelector('.quiz-random-button');
 
-// 初期状態の問題を表示
-updateQuestion();
-
-// 答え合わせボタンがクリックされたときの処理
-function checkAnswer() {
-  // 答えを取得
-  const answer = answerInputElement.value;
+// 問題を更新する関数
+function updateQuestion() {
+  // 問題を取得
+  const question = words[currentQuestionIndex].question;
   
-  // 現在の問題の正解を取得
-  const correctAnswer = quiz[currentQuestionIndex].answer;
+  // 問題を表示
+  questionElement.textContent = question;
   
-  // 答えが正しいかどうかをチェック
-  if (answer === correctAnswer) {
-    // 正解の場合は、「正解」と表示
-    resultElement.textContent = '正解';
-  } else {
-    // 不正解の場合は、「不正解」と表示
-    resultElement.textContent = '不正解';
-  }
+  // 答え欄を空にする
+  answerInputElement.value = '';
   
-  // 答え合わせボタンを無効化
-  checkButtonElement.disabled = true;
-  
-  // 次の問題へボタンを有効化
-  nextButtonElement.disabled = false;
-}
-
-// 次の問題へボタンがクリックされたときの処理
-function nextQuestion() {
-  // 問題を更新
-  updateQuestion();
-  
-  // 答え合わせボタンと次の問題へボタンを有効化
-  checkButtonElement.disabled = false;
-  nextButtonElement.disabled = true;
-  
-  // 正解/不正解の表示をクリア
+  // 結果を空にする
   resultElement.textContent = '';
 }
 
-// ランダムに出題ボタンがクリックされたときの処理
-function toggleRandom() {
-  // ランダム出題モードをトグル
-  isRandom = !isRandom;
+// 次の問題を出題する関数
+function showNextQuestion() {
+  // 現在の問題のインデックスを更新
+  currentQuestionIndex++;
   
-  // 問題を更新
-  updateQuestion();
+  // 全ての問題を出題し終わった場合
+  if (currentQuestionIndex === words.length) {
+    // 「終了」と表示して、答え合わせボタンと次の問題へボタンを無効化
+    questionElement.textContent = '終了';
+    checkButtonElement.disabled = true;
+    nextButtonElement.disabled = true;
+  } else {
+    // 次の問題を出題
+    updateQuestion();
+  }
 }
 
-// 問題を更新する関数
-function updateQuestion() {
-  // 問題のインデックスを決定
-  if (isRandom)
+// ランダムに問題を出題するかどうかを切り替える関数
+function toggleRandom() {
+  isRandom = !isRandom;
+  
+  if (isRandom) {
+    randomButtonElement.textContent = '順番に';
+    words.sort(() => Math.random() - 0.5);
+  } else {
+    randomButtonElement.textContent = 'ランダム';
+    words.sort((a, b) => a.question.localeCompare(b.question));
+  }
+}
+
+// イベントリスナーの設定
+checkButtonElement.addEventListener('click', checkAnswer);
+nextButtonElement.addEventListener('click', showNextQuestion);
+randomButtonElement.addEventListener('click', toggleRandom);
