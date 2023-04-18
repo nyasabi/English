@@ -1,27 +1,31 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
     <title>英単語クイズ</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>英単語クイズ</h1>
+      <h1>英単語クイズ</h1>
     </header>
     <main>
-<div class="quiz-section">
-  <h2 class="quiz-question"></h2>
-  <input type="text" class="quiz-answer">
-  <button class="quiz-check-button">答え合わせ</button>
-  <p class="quiz-result"></p>
-  <button class="quiz-next-button" disabled>次の問題へ</button>
-  <button class="quiz-random-button">ランダム</button>
-</div>
-
-        </section>
+      <section class="quiz-section">
+        <h2 class="quiz-question"></h2>
+        <div class="quiz-answer-wrapper">
+          <label>
+            答え:
+            <input type="text" class="quiz-answer">
+          </label>
+        </div>
+        <div class="quiz-buttons">
+          <button class="quiz-check-button" disabled>答え合わせ</button>
+          <button class="quiz-next-button" disabled>次の問題へ</button>
+          <button class="quiz-random-button">ランダムモード</button>
+        </div>
+        <p class="quiz-result"></p>
+      </section>
     </main>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
