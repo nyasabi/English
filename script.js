@@ -53,7 +53,7 @@ let isRandom = false;
 function updateQuestion() {
   // 問題文を更新
   questionElement.textContent = words[currentQuestionIndex].question;
-  
+
   // ランダムモードの場合は問題文をランダムに表示
   if (isRandom) {
     const randomIndex = Math.floor(Math.random() * words.length);
@@ -119,23 +119,14 @@ checkButtonElement.addEventListener('click', checkAnswer);
 nextButtonElement.addEventListener('click', showNextQuestion);
 
 // 「ランダムに出題する」ボタンをクリックしたときの処理
-randomButtonElement.addEventListener('click', () => {
-  // ランダムに出題するかどうかのフラグを切り替える
-  toggleRandom();
+randomButtonElement.addEventListener('click', function() {
+  // 出題済みの問題をリセットする
+  answeredQuestions = [];
   
-  // 問題を初期化
-  if (isRandom) {
-    // 問題をシャッフルする
-    words = shuffleArray(words);
-  }
+  // 残っている問題をシャッフルする
+  shuffleArray(questions);
+
+  // 最初の問題を表示する
   currentQuestionIndex = 0;
-  updateQuestion();
-  
-  // 「答え合わせ」ボタンと次の問題へボタンを有効化
-  checkButtonElement.disabled = false;
-  nextButtonElement.disabled = false;
+  showQuestion(questions[currentQuestionIndex]);
 });
-
-// 初期化
-updateQuestion();
-
