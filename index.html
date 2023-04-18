@@ -1,32 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>英単語クイズ</title>
-	<link rel="stylesheet" href="style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英単語クイズ</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
 </head>
 <body>
-	<header>
-		<h1>英単語クイズ</h1>
-	</header>
-	<main>
-		<section class="quiz-section">
-			<h2 class="quiz-question">問題文をここに表示</h2>
-			<div class="quiz-answer-container">
-				<input type="text" class="quiz-answer" placeholder="答えを入力">
-				<button class="quiz-check-button" onclick="checkAnswer()">答え合わせ</button>
-			</div>
-			<div class="quiz-result-container">
-				<p class="quiz-result"></p>
-				<button class="quiz-next-button" onclick="nextQuestion()">次の問題へ</button>
-				<button class="quiz-random-button" onclick="toggleRandom()">ランダムに出題</button>
-			</div>
-		</section>
-	</main>
-	<footer>
-		<p>&copy; 2023 英単語クイズサイト</p>
-	</footer>
-	<script src="script.js"></script>
+    <header>
+        <h1>英単語クイズ</h1>
+    </header>
+    <main>
+        <section class="quiz-section">
+            <h2 class="quiz-question">問題文をここに表示</h2>
+            <div class="quiz-answer-container">
+                <input type="text" class="quiz-answer" placeholder="答えを入力">
+                <button class="quiz-check-button" onclick="checkAnswer()">答え合わせ</button>
+            </div>
+            <div class="quiz-result-container">
+                <p class="quiz-result"></p>
+                <button class="quiz-next-button" onclick="showNextQuestion()">次の問題へ</button>
+                <button class="quiz-random-button" onclick="toggleRandom()">ランダムに出題</button>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
