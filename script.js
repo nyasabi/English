@@ -118,4 +118,24 @@ checkButtonElement.addEventListener('click', checkAnswer);
 // 「次の問題へ」ボタンをクリックしたときの処理
 nextButtonElement.addEventListener('click', showNextQuestion);
 
-// 「ランダムに出題する」ボタンをクリ
+// 「ランダムに出題する」ボタンをクリックしたときの処理
+randomButtonElement.addEventListener('click', () => {
+  // ランダムに出題するかどうかのフラグを切り替える
+  toggleRandom();
+  
+  // 問題を初期化
+  if (isRandom) {
+    // 問題をシャッフルする
+    words = shuffleArray(words);
+  }
+  currentQuestionIndex = 0;
+  updateQuestion();
+  
+  // 「答え合わせ」ボタンと次の問題へボタンを有効化
+  checkButtonElement.disabled = false;
+  nextButtonElement.disabled = false;
+});
+
+// 初期化
+updateQuestion();
+
