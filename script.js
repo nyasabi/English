@@ -41,66 +41,53 @@ var words = [
 
 ];
 
-// 問題をランダムに出題するかどうかのフラグ
-let isRandom = false;
+// 「答え合わせ」ボタンをクリックしたときの処理
+checkButtonElement.addEventListener('click', () => {
+// 答えを取得
+const answer = words[currentQuestionIndex].answer;
 
-// 現在の問題のインデックス
-let currentQuestionIndex = 0;
+// 入力された答えを取得
+const userAnswer = answerInputElement.value.trim().toLowerCase();
 
-// DOM要素の取得
-const questionElement = document.querySelector('.quiz-question');
-const answerInputElement = document.querySelector('.quiz-answer');
-const resultElement = document.querySelector('.quiz-result');
-const nextButtonElement = document.querySelector('.quiz-next-button');
-const checkButtonElement = document.querySelector('.quiz-check-button');
-const randomButtonElement = document.querySelector('.quiz-random-button');
-
-// 問題を更新する関数
-function updateQuestion() {
-  // 問題を取得
-  const question = words[currentQuestionIndex].question;
-  
-  // 問題を表示
-  questionElement.textContent = question;
-  
-  // 答え欄を空にする
-  answerInputElement.value = '';
-  
-  // 結果を空にする
-  resultElement.textContent = '';
+// 答えが正しい場合
+if (userAnswer === answer) {
+// 正解と表示
+resultElement.textContent = '正解！';
+resultElement.classList.add('correct');
+resultElement.classList.remove('incorrect');
+} else {
+// 不正解と表示
+resultElement.textContent = 不正解。正解は「${answer}」です。;
+resultElement.classList.add('incorrect');
+resultElement.classList.remove('correct');
 }
 
-// 次の問題を出題する関数
-function showNextQuestion() {
-  // 現在の問題のインデックスを更新
-  currentQuestionIndex++;
-  
-  // 全ての問題を出題し終わった場合
-  if (currentQuestionIndex === words.length) {
-    // 「終了」と表示して、答え合わせボタンと次の問題へボタンを無効化
-    questionElement.textContent = '終了';
-    checkButtonElement.disabled = true;
-    nextButtonElement.disabled = true;
-  } else {
-    // 次の問題を出題
-    updateQuestion();
-  }
-}
+// 「次の問題へ」ボタンを有効化
+nextButtonElement.disabled = false;
+});
 
-// ランダムに問題を出題するかどうかを切り替える関数
-function toggleRandom() {
-  isRandom = !isRandom;
-  
-  if (isRandom) {
-    randomButtonElement.textContent = '順番に';
-    words.sort(() => Math.random() - 0.5);
-  } else {
-    randomButtonElement.textContent = 'ランダム';
-    words.sort((a, b) => a.question.localeCompare(b.question));
-  }
-}
+// 「次の問題へ」ボタンをクリックしたときの処理
+nextButtonElement.addEventListener('click', () => {
+// 次の問題を出題
+showNextQuestion();
 
-// イベントリスナーの設定
-checkButtonElement.addEventListener('click', checkAnswer);
-nextButtonElement.addEventListener('click', showNextQuestion);
-randomButtonElement.addEventListener('click', toggleRandom);
+// 「答え合わせ」ボタンを無効化
+checkButtonElement.disabled = true;
+});
+
+// 「ランダムに出題する」ボタンをクリックしたときの処理
+randomButtonElement.addEventListener('click', () => {
+// ランダムに出題するかどうかのフラグを切り替える
+toggleRandom();
+
+// 問題を初期化
+currentQuestionIndex = 0;
+updateQuestion();
+
+// 「答え合わせ」ボタンと次の問題へボタンを有効化
+checkButtonElement.disabled = false;
+nextButtonElement.disabled = false;
+});
+
+// 初期化
+updateQuestion();
